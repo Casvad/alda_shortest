@@ -25,7 +25,7 @@ class BaseSortingTimeGather(object):
     def take_times(self, size, samples_by_size):
         samples = []
         for _ in range(samples_by_size):
-            samples.append((sorted(data_generator.get_random_list(size)), data_generator.get_random_x()))
+            samples.append((data_generator.get_random_adj_list(size), data_generator.get_random_x(size)))
 
         return [self.take_time_for_algorithm(samples, x) for x in self.algorithms]
 
@@ -33,12 +33,12 @@ class BaseSortingTimeGather(object):
         Returns the median of the execution time measures for a sorting approach given in 
     """
 
-    def take_time_for_algorithm(self, samples_array, sorting_approach):
+    def take_time_for_algorithm(self, samples_array, shortest_approach):
         times = []
 
         for sample in samples_array:
             start_time = time.time()
-            sorting_approach(sample[0], sample[1])
+            shortest_approach(sample[0], sample[1])
             times.append(int(constants.TIME_MULTIPLIER * (time.time() - start_time)))
 
         times.sort()
